@@ -1,0 +1,9 @@
+name: Location
+K: 2
+dim_design: 2
+dim_outcome: 1
+design_scale: 1
+theta_dist: normal
+noise_scale: 0.5
+base_signal: 0.1
+max_signal: 1e-4

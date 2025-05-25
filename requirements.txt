@@ -1,0 +1,7 @@
+# python=3.12
+# pytorch
+termcolor
+wandb
+hydra-core
+attrdictionary
+matplotlib

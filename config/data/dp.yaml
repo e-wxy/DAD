@@ -1,0 +1,6 @@
+name: Death_Process
+theta_dist: truncated_normal
+N: 50
+dim_design: 1
+dim_outcome: 1
+design_scale: None

@@ -1,0 +1,38 @@
+defaults:
+  - _self_
+  - config
+  - data/location
+  - model/mlp_loc
+
+max_epoch: 100000
+batch_size: 2000
+eval_size: 100
+L: 2000
+M: 2000
+T: 30
+lr: 5e-5
+loss: PCELoss
+seed: 123
+fix_seed: True
+clip_grads: True
+verbose: 50
+device: cuda
+output_dir: ./outputs
+checkpoint: 500
+checkpoint_name: ckpt.tar
+file_name: loc.pth
+
+# final evaluation
+eval_batch_size: 100
+eval_L: 1000000
+eval_M: 2000
+eval_T: 30
+
+
+##### W&B config #####
+wandb:
+  group: ${data.name}
+  project: "DAD"
+  use_wandb: False
+  run_name: ${data.name}-${data.dim_design}D${data.K}K-${now:%Y-%m-%d_%H-%M}
+  tag: "mlp"

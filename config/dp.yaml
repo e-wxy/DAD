@@ -1,0 +1,38 @@
+defaults:
+  - _self_
+  - config
+  - data/dp
+  - model/mlp_dp
+
+max_epoch: 100000
+batch_size: 500
+eval_size: 100
+L: 500
+M: 500
+T: 4
+lr: 1e-3
+loss: PCELossScoreGradient
+seed: 123
+fix_seed: True
+clip_grads: True
+verbose: 50
+device: cuda
+output_dir: ./outputs
+checkpoint: 500
+checkpoint_name: ckpt.tar
+file_name: dp.pth
+
+# final evaluation
+eval_batch_size: 100
+eval_L: 1000000
+eval_M: 2000
+eval_T: 4
+
+
+##### W&B config #####
+wandb:
+  group: ${data.name}
+  project: "DAD"
+  use_wandb: False
+  run_name: ${data.name}-${now:%Y-%m-%d_%H-%M}
+  tag: "mlp"

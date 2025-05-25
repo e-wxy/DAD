@@ -1,0 +1,6 @@
+name: MLP
+
+encoding_dim: 16
+hidden_dim: 128
+encoder_hidden_depth: 2
+emitter_hidden_depth: 2
