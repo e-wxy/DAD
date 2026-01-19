@@ -29,6 +29,56 @@ class EncoderNetwork(nn.Module):
         x = self.hidden_layers(inputs)
         x = self.output_layer(x)
         return x
+    
+
+class EncoderNetworkV2(nn.Module):
+    """ Encoder network
+        embedding design and observation separately and then concatenate
+        design_dim -> encoding_dim
+        observation_dim -> encoding_dim
+        -> encoding_dim * 2
+    """
+
+    def __init__(self, design_dim, observation_dim, embed_dim=32, hidden_dim=128, encoding_dim=32, hidden_depth=1, activation=nn.ReLU(), normalization=True):
+        super().__init__()
+        self.encoding_dim = encoding_dim
+        self.design_dim = design_dim
+        self.observation_dim = observation_dim
+        
+        self.embed_design = nn.Sequential(
+            nn.Linear(self.design_dim, embed_dim),
+            activation,
+            nn.LayerNorm(embed_dim) if normalization else nn.Identity()
+        )
+
+        self.embed_observation = nn.Sequential(
+            nn.Linear(self.observation_dim, embed_dim),
+            activation,
+            nn.LayerNorm(embed_dim) if normalization else nn.Identity()
+        )
+
+        input_dim = embed_dim * 2
+        hidden_layers = []
+        for _ in range(hidden_depth):
+            hidden_layers.append(nn.Linear(input_dim, hidden_dim))
+            hidden_layers.append(activation)
+            hidden_layers.append(nn.LayerNorm(hidden_dim) if normalization else nn.Identity())
+            input_dim = hidden_dim
+
+        self.hidden_layers = nn.Sequential(*hidden_layers)
+        self.output_layer = nn.Linear(hidden_dim, encoding_dim)
+
+
+    def forward(self, xi, y):
+
+        xi_embedded = self.embed_design(xi)
+        y_embedded = self.embed_observation(y)
+
+        inputs = torch.cat([xi_embedded, y_embedded], dim=-1)
+
+        x = self.hidden_layers(inputs)
+        x = self.output_layer(x)
+        return x
 
 
 class EmitterNetwork(nn.Module):
@@ -103,8 +153,8 @@ class SetEquivariantDesignNetwork(nn.Module):
         if t == 0:
             # Generate the first design
             # fill with empty value (expand to batch size)
-            sum_encoding = self.empty_value.new_zeros(self.encoder.encoding_dim)
-            # sum_encoding = self.empty_value.expand((B, -1))
+            # sum_encoding = self.empty_value.new_zeros(self.encoder.encoding_dim)
+            sum_encoding = self.empty_value.expand((B, -1))
 
         else:
             # Pooling

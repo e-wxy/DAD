@@ -1,0 +1,8 @@
+name: MLP
+
+embed_dim: 32
+encoding_dim: 32
+hidden_dim: 128
+encoder_hidden_depth: 1
+emitter_hidden_depth: 1
+encoder_normalization: True

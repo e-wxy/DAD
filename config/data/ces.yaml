@@ -1,0 +1,7 @@
+name: CES
+dim_design: 6
+dim_outcome: 1
+design_scale: 100
+outcome_scale: 1
+noise_scale: 0.005
+epsilon: 2 ** (-22)

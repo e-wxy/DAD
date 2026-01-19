@@ -1,0 +1,38 @@
+defaults:
+  - _self_
+  - config
+  - data/ces
+  - model/mlp_ces
+
+max_epoch: 50000
+batch_size: 100
+eval_size: 100
+L: 1024
+M: 100
+T: 10
+lr: 1e-4
+loss: PCELoss
+seed: 123
+fix_seed: True
+clip_grads: True
+verbose: 50
+device: cuda
+output_dir: ./outputs
+checkpoint: 500
+checkpoint_name: ckpt.tar
+file_name: ces.pth
+
+# final evaluation
+eval_batch_size: 10
+eval_L: 10000000
+eval_M: 2000
+eval_T: 10
+
+
+##### W&B config #####
+wandb:
+  group: ${data.name}
+  project: "DAD"
+  use_wandb: False
+  run_name: ${data.name}-${data.dim_design}D-${now:%Y-%m-%d_%H-%M}
+  tag: "mlp"
